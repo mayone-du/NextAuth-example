@@ -16,11 +16,6 @@ export const Header: React.VFC = memo(() => {
               <a>HOME</a>
             </Link>
           </li>
-          <li className="m-2">
-            <Link href="/auth/signup">
-              <a>SignUp</a>
-            </Link>
-          </li>
         </ul>
       </nav>
     </header>
