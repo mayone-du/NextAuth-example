@@ -1,15 +1,14 @@
 import NextAuth from "next-auth";
-// import type { GenericObject } from "next-auth/_utils";
 import Providers from "next-auth/providers";
 
 // eslint-disable-next-line import/no-default-export
 export default NextAuth({
   // Configure one or more authentication providers
   providers: [
-    Providers.GitHub({
-      clientId: process.env.GITHUB_ID ?? "",
-      clientSecret: process.env.GITHUB_SECRET ?? "",
-      scope: "",
+    Providers.Google({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      // scope: "",
     }),
     // ...add more providers here
   ],
@@ -21,18 +20,18 @@ export default NextAuth({
     },
     async redirect(url, baseUrl) {
       // eslint-disable-next-line no-console
-      console.log("redirect!");
+      console.log("redirect!", url, baseUrl);
       return url.startsWith(baseUrl) ? url : baseUrl;
     },
-    async jwt(token, _user, account, _profile, _isNewUser) {
-      // eslint-disable-next-line no-console
-      console.log("jwt!");
-      // Add access_token to the token right after signin
-      if (account?.accessToken) {
-        token.accessToken = account.accessToken;
-      }
-      return token;
-    },
+    // async jwt(token, _user, account, _profile, _isNewUser) {
+    //   // eslint-disable-next-line no-console
+    //   console.log("jwt!");
+    //   // Add access_token to the token right after signin
+    //   if (account?.accessToken) {
+    //     token.accessToken = account.accessToken;
+    //   }
+    //   return token;
+    // },
     async session(session, token) {
       // eslint-disable-next-line no-console
       console.log("session!");

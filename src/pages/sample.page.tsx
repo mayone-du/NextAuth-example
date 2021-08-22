@@ -1,17 +1,12 @@
 import type { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/client";
 import { Layout } from "src/components/layouts/Layout";
-import { ThemeChanger } from "src/components/ThemeChanger";
 
 const SamplePage: NextPage = () => {
   const [session, isLoading] = useSession();
   return (
     <Layout meta={{ pageName: "SamplePage" }}>
-      <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="text-5xl bg-gray-100">SamplePage</div>
-        <ThemeChanger />
-      </div>
-      <>
+      <div>
         {!session && (
           <>
             {isLoading ? (
@@ -20,6 +15,7 @@ const SamplePage: NextPage = () => {
               <>
                 Not signed in <br />
                 <button
+                  className="block p-2 mx-auto rounded border"
                   // eslint-disable-next-line react/jsx-handler-names
                   onClick={() => {
                     return signIn();
@@ -36,8 +32,9 @@ const SamplePage: NextPage = () => {
             Signed in as <img src={session?.user?.image ?? ""} width="50px" alt={"alt"} />{" "}
             {session?.user?.name}
             <br />
-            AccessToken : {session.accessToken} <br />
+            {console.log(session)}
             <button
+              className="block p-2 mx-auto rounded border"
               // eslint-disable-next-line react/jsx-handler-names
               onClick={() => {
                 return signOut();
@@ -47,7 +44,7 @@ const SamplePage: NextPage = () => {
             </button>
           </>
         )}
-      </>
+      </div>
     </Layout>
   );
 };
