@@ -15,14 +15,17 @@ export default NextAuth({
   ],
   callbacks: {
     async signIn(_user, _account, _profile) {
+      // eslint-disable-next-line no-console
       console.log("signIn!");
       return true;
     },
     async redirect(url, baseUrl) {
+      // eslint-disable-next-line no-console
       console.log("redirect!");
       return url.startsWith(baseUrl) ? url : baseUrl;
     },
     async jwt(token, _user, account, _profile, _isNewUser) {
+      // eslint-disable-next-line no-console
       console.log("jwt!");
       // Add access_token to the token right after signin
       if (account?.accessToken) {
@@ -31,6 +34,7 @@ export default NextAuth({
       return token;
     },
     async session(session, token) {
+      // eslint-disable-next-line no-console
       console.log("session!");
       // Add property to session, like an access_token from a provider.
       session.accessToken = (token as any).accessToken;
