@@ -4,6 +4,7 @@ import "nprogress/nprogress.css";
 import { ApolloProvider } from "@apollo/client";
 import type { NextPageContext } from "next";
 import type { AppProps } from "next/app";
+import { Provider } from "next-auth/client";
 import { ThemeProvider } from "next-themes";
 import nprogress from "nprogress";
 import { useEffect } from "react";
@@ -24,12 +25,14 @@ const App = (props: AppProps, context: NextPageContext) => {
 
   return (
     <div>
-      <ApolloProvider client={apolloClient}>
-        <ThemeProvider attribute="class">
-          <props.Component {...props.pageProps} />
-          <Toaster toastOptions={{ duration: 2500 }} />
-        </ThemeProvider>
-      </ApolloProvider>
+      <Provider session={props.pageProps.session}>
+        <ApolloProvider client={apolloClient}>
+          <ThemeProvider attribute="class">
+            <props.Component {...props.pageProps} />
+            <Toaster toastOptions={{ duration: 2500 }} />
+          </ThemeProvider>
+        </ApolloProvider>
+      </Provider>
     </div>
   );
 };
