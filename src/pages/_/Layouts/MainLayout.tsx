@@ -1,16 +1,23 @@
 // import { Footer } from "./Footer";
 // import { Header } from "./Header";
-
 import type { NextPage } from "next";
+// import { useSession } from "next-auth/client";
 
 // メインレイアウト
 export const MainLayout = (page: NextPage) => {
+  // const [session, isLoading] = useSession();
+  // eslint-disable-next-line no-console
+  // console.log("MainLayout", session, isLoading);
+
   return (
-    <div className="grid grid-rows-[auto,1fr,auto] min-h-screen">
+    <div>
       <header>headerです</header>
-      <main className="bg-red-300">
-        {/* <LayoutErrorBoundary>{page}</LayoutErrorBoundary> */}
-        {page}
+      <main>
+        {/* <div>{isLoading ? "Loading" : session?.user?.email}</div> */}
+        <div>
+          {/* <LayoutErrorBoundary>{page}</LayoutErrorBoundary> */}
+          {page}
+        </div>
       </main>
       <footer>footerです</footer>
     </div>

@@ -1,8 +1,10 @@
-import type { NextPage } from "next";
+// import type { NextPage } from "next";
 import { Layout } from "src/components/layouts/Layout";
 import { ThemeChanger } from "src/components/ThemeChanger";
+import { MainLayout } from "src/pages/_/Layouts/MainLayout";
 
-const IndexPage: NextPage = () => {
+const IndexPage: any = () => {
+  // const IndexPage: NextPage = () => {
   return (
     <Layout meta={{ pageName: "IndexPage" }}>
       <div className="flex flex-col justify-center items-center min-h-screen">
@@ -14,3 +16,5 @@ const IndexPage: NextPage = () => {
 };
 
 export default IndexPage;
+
+IndexPage.getLayout = MainLayout;
