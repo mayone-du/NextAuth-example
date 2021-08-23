@@ -23,6 +23,7 @@ const App = (props: any, context: NextPageContext) => {
     nprogress.done();
   });
 
+  // レイアウトを取得
   const getLayout =
     props.Component.getLayout ||
     ((page: NextPage) => {

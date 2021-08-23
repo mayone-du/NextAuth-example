@@ -1,19 +1,25 @@
-// import { Footer } from "./Footer";
-// import { Header } from "./Header";
 import type { NextPage } from "next";
-// import { useSession } from "next-auth/client";
+import type { Session } from "next-auth";
+import { getSession } from "next-auth/client";
+import { useEffect, useState } from "react";
 
 // メインレイアウト
 export const MainLayout = (page: NextPage) => {
-  // const [session, isLoading] = useSession();
-  // eslint-disable-next-line no-console
-  // console.log("MainLayout", session, isLoading);
+  const [userInfo, setUserInfo] = useState<Session | null>(null);
+
+  // 初回マウント時にユーザー情報を取得
+  useEffect(() => {
+    (async () => {
+      const session = await getSession();
+      setUserInfo(session);
+    })();
+  }, []);
 
   return (
     <div>
       <header>headerです</header>
       <main>
-        {/* <div>{isLoading ? "Loading" : session?.user?.email}</div> */}
+        <div>{userInfo === null ? "Loading" : userInfo?.user?.email}</div>
         <div>
           {/* <LayoutErrorBoundary>{page}</LayoutErrorBoundary> */}
           {page}
