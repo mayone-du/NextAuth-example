@@ -2,7 +2,7 @@ import "tailwindcss/tailwind.css";
 import "nprogress/nprogress.css";
 
 import { ApolloProvider } from "@apollo/client";
-import type { NextPage, NextPageContext } from "next";
+import type { NextPage } from "next";
 // import type { AppProps } from "next/app";
 import { Provider } from "next-auth/client";
 import { ThemeProvider } from "next-themes";
@@ -13,8 +13,8 @@ import { initializeApollo } from "src/graphql/apollo/client";
 
 nprogress.configure({ showSpinner: false, speed: 400, minimum: 0.25 });
 
-const App = (props: any, context: NextPageContext) => {
-  const apolloClient = initializeApollo(null, context);
+const App = (props: any) => {
+  const apolloClient = initializeApollo(null);
 
   if (process.browser) {
     nprogress.start();
