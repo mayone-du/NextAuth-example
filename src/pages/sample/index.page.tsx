@@ -1,9 +1,11 @@
-import type { NextPage } from "next";
+// import type { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/client";
 import { Layout } from "src/components/layouts/Layout";
 import { fixDateFormat } from "src/libs/fixDateFormat";
+import { MainLayout } from "src/pages/_/Layouts/MainLayout";
 
-const SamplePage: NextPage = () => {
+const SamplePage: any = () => {
+  // const SamplePage: NextPage = () => {
   const [session, isLoading] = useSession();
   return (
     <Layout meta={{ pageName: "SamplePage" }}>
@@ -55,3 +57,5 @@ const SamplePage: NextPage = () => {
 };
 
 export default SamplePage;
+
+SamplePage.getLayout = MainLayout;

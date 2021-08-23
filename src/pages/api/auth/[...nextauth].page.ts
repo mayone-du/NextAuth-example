@@ -24,15 +24,16 @@ export default NextAuth({
       console.log("redirect!", url, baseUrl);
       return url.startsWith(baseUrl) ? url : baseUrl;
     },
-    // async jwt(token, _user, account, _profile, _isNewUser) {
-    //   // eslint-disable-next-line no-console
-    //   console.log("jwt!");
-    //   // Add access_token to the token right after signin
-    //   if (account?.accessToken) {
-    //     token.accessToken = account.accessToken;
-    //   }
-    //   return token;
-    // },
+    async jwt(token, _user, account, _profile, _isNewUser) {
+      // eslint-disable-next-line no-console
+      console.log("jwt!");
+      // console.log("jwt!", token, _user, account, _profile, _isNewUser);
+      // Add access_token to the token right after signin
+      if (account?.accessToken) {
+        token.accessToken = account.accessToken;
+      }
+      return token;
+    },
     async session(session, token) {
       // eslint-disable-next-line no-console
       console.log("session!");
