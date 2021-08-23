@@ -16,6 +16,7 @@ export default NextAuth({
     async signIn(_user, _account, _profile) {
       // eslint-disable-next-line no-console
       console.log("signIn!");
+      // 初回サインイン時にDBにユーザーを登録し、二回目以降はユーザーが存在すればOKにする
       return true;
     },
     async redirect(url, baseUrl) {
