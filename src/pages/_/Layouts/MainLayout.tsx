@@ -4,6 +4,7 @@ import { getSession } from "next-auth/client";
 import { useEffect, useState } from "react";
 import { GetNewsCountDocument } from "src/apollo/schema";
 import { initializeApollo } from "src/graphql/apollo/client";
+import { LayoutErrorBoundary } from "src/pages/_/Layouts/LayoutErrorBoundary";
 
 // メインレイアウト
 export const MainLayout = (page: NextPage) => {
@@ -16,8 +17,9 @@ export const MainLayout = (page: NextPage) => {
       const session = await getSession();
       setUserInfo(session);
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { data: newsCount, error } = await apolloClient.query({ query: GetNewsCountDocument });
+      // eslint-disable-next-line no-console
+      console.log(newsCount, error);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -29,8 +31,7 @@ export const MainLayout = (page: NextPage) => {
       <main>
         <div>{userInfo === null ? "Loading" : userInfo?.user?.email}</div>
         <div>
-          {/* <LayoutErrorBoundary>{page}</LayoutErrorBoundary> */}
-          {page}
+          <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
         </div>
       </main>
       <footer>footerです</footer>
