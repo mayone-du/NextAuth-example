@@ -15,11 +15,15 @@ export const MainLayout = (page: NextPage) => {
 
   // 初回マウント時にユーザー情報を取得
   useEffect(() => {
-    if (!userInfo.accessToken) {
+    if (!userInfo.idToken) {
       (async () => {
         const session = await getSession();
-        const accessToken = session?.accessToken as string;
-        userInfoVar({ accessToken: accessToken });
+        // const accessToken = session?.accessToken as string;
+        const idToken = session?.idToken as string;
+        console.log("MainLayout session", session);
+
+        // const idToken = session?
+        userInfoVar({ idToken: idToken });
         // const { data: newsCount, error } = await apolloClient.query({ query: GetNewsCountDocument });
         // eslint-disable-next-line no-console
         // console.log(newsCount, error);

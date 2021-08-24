@@ -26,18 +26,18 @@ const authLink = setContext((operation, { headers }) => {
 });
 
 const createApolloClient = (reactiveVar: any) => {
-  let accessToken: string;
+  let idToken: string;
   (async () => {
     const session = await getSession();
     console.log("async", session);
 
-    accessToken = session?.accessToken as string;
+    idToken = session?.idToken as string;
   })();
-  console.log("createApolloClient", accessToken);
+  console.log("createApolloClient", idToken);
 
   const newHttpLink = createUploadLink({
     uri: GRAPHQL_API_ENDPOINT,
-    headers: { authorization: reactiveVar.accessToken ?? "" },
+    headers: { authorization: reactiveVar.idToken ?? "" },
   });
   return new ApolloClient({
     ssrMode: typeof window === "undefined",

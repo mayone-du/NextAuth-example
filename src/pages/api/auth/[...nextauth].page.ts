@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import { userInfoVar } from "src/graphql/apollo/cache";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const GOOGLE_AUTHORIZATION_URL =
@@ -43,6 +42,7 @@ const refreshAccessToken = async (token: any) => {
 
     return {
       ...token,
+      idToken: refreshedTokens.id_token,
       accessToken: refreshedTokens.access_token,
       accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
@@ -59,7 +59,6 @@ const refreshAccessToken = async (token: any) => {
 
 // eslint-disable-next-line import/no-default-export
 export default NextAuth({
-  // Configure one or more authentication providers
   providers: [
     Providers.Google({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
@@ -67,13 +66,12 @@ export default NextAuth({
       authorizationUrl: GOOGLE_AUTHORIZATION_URL,
       // scope: "",
     }),
-    // ...add more providers here
   ],
   callbacks: {
     async signIn(_user, _account, _profile) {
       // eslint-disable-next-line no-console
       console.log("signIn!", _user, _account, _profile);
-      // 初回サインイン時にDBにユーザーを登録し、二回目以降はユーザーが存在すればOKにする
+      // TODO: 初回サインイン時にDBにユーザーを登録し、二回目以降はユーザーが存在すればOKにする
       return true;
     },
     async redirect(url, baseUrl) {
@@ -84,10 +82,10 @@ export default NextAuth({
     async jwt(token, user, account, _profile, _isNewUser) {
       // eslint-disable-next-line no-console
       console.log("NextAuth jwt fn", token, user, account, _profile, _isNewUser);
-      console.log("refresh token", account);
 
       if (account && user) {
         return {
+          idToken: account.id_token,
           accessToken: account.accessToken,
           accessTokenExpires: Date.now() + account.expires_in * 1000,
           refreshToken: account.refresh_token,
@@ -106,7 +104,6 @@ export default NextAuth({
       // // Add access_token to the token right after signin
       // if (account?.accessToken) {
       //   token.accessToken = account.accessToken;
-      //   userInfoVar({ accessToken: account.accessToken });
       // }
       // return token;
     },
@@ -116,6 +113,7 @@ export default NextAuth({
 
       if (token) {
         session.user = token.user;
+        session.idToken = token.idToken;
         session.accessToken = token.accessToken;
         session.error = token.error;
       }
