@@ -2,6 +2,7 @@ import type { NormalizedCacheObject } from "@apollo/client";
 import { ApolloClient } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
+import { getSession } from "next-auth/client";
 // import type { AppProps } from "next/dist/next-server/lib/router/router";
 // import nookies, { parseCookies } from "nookies";
 import { cache } from "src/graphql/apollo/cache";
@@ -15,22 +16,41 @@ const httpLink = createUploadLink({
 });
 
 const authLink = setContext((operation, { headers }) => {
-  return { headers: { ...headers } };
+  // const accessToken = useReactiveVar(userInfoVar).accessToken;
+  // if (accessToken) {
+  //   return { headers: { ...headers, authorization: `Bearer ${accessToken}` } };
+  // } else {
+  return { headers };
+  // }
+  // return { headers: { ...headers, authorization: `Bearer token` } };
 });
 
-const createApolloClient = () => {
+const createApolloClient = (reactiveVar: any) => {
+  let accessToken: string;
+  (async () => {
+    const session = await getSession();
+    console.log("async", session);
+
+    accessToken = session?.accessToken as string;
+  })();
+  console.log("createApolloClient", accessToken);
+
+  const newHttpLink = createUploadLink({
+    uri: GRAPHQL_API_ENDPOINT,
+    headers: { authorization: reactiveVar.accessToken ?? "" },
+  });
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: typeof window === "undefined" ? httpLink : authLink.concat(httpLink),
+    link: typeof window === "undefined" ? newHttpLink : authLink.concat(newHttpLink),
     cache: cache,
   });
 };
-export const initializeApollo = (_initialState = null) => {
-  const _apolloClient = apolloClient ?? createApolloClient();
+export const initializeApollo = (_initialState = null, reactiveVar: any) => {
+  const _apolloClient = apolloClient ?? createApolloClient(reactiveVar);
   // SSR時は新しいclientを作成
   if (typeof window === "undefined") return _apolloClient;
   // CSR時は同じクライアントを使い回す
-  if (!apolloClient) apolloClient = _apolloClient;
+  // if (!apolloClient) apolloClient = _apolloClient;
 
   return _apolloClient;
 };

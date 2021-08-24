@@ -7,6 +7,10 @@ import { MainLayout } from "src/pages/_/Layouts/MainLayout";
 const SamplePage: any = () => {
   // const SamplePage: NextPage = () => {
   const [session, isLoading] = useSession();
+
+  // eslint-disable-next-line no-console
+  console.log("session", session);
+
   return (
     <Layout meta={{ pageName: "SamplePage" }}>
       <div>

@@ -18,90 +18,7 @@ export type Scalars = {
    * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
    */
   DateTime: any;
-  /**
-   * The `GenericScalar` scalar type represents a generic
-   * GraphQL scalar value that could be:
-   * String, Boolean, Int, Float, List or Object.
-   */
-  GenericScalar: any;
-};
-
-export type CategoryNode = Node & {
-  __typename?: 'CategoryNode';
-  /** The ID of the object. */
-  id: Scalars['ID'];
-  categoryName: Scalars['String'];
-  selectCategory: NewsNodeConnection;
-};
-
-
-export type CategoryNodeSelectCategoryArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  url?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  title_Icontains?: Maybe<Scalars['String']>;
-  summary?: Maybe<Scalars['String']>;
-  summary_Icontains?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  createdAt_Icontains?: Maybe<Scalars['DateTime']>;
-};
-
-export type CategoryNodeConnection = {
-  __typename?: 'CategoryNodeConnection';
-  /** Pagination data for this connection. */
-  pageInfo: PageInfo;
-  /** Contains the nodes in this connection. */
-  edges: Array<Maybe<CategoryNodeEdge>>;
-};
-
-/** A Relay edge containing a `CategoryNode` and its cursor. */
-export type CategoryNodeEdge = {
-  __typename?: 'CategoryNodeEdge';
-  /** The item at the end of the edge */
-  node?: Maybe<CategoryNode>;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
-};
-
-export type CreateCategoryMutationInput = {
-  categoryName: Scalars['String'];
-  clientMutationId?: Maybe<Scalars['String']>;
-};
-
-export type CreateCategoryMutationPayload = {
-  __typename?: 'CreateCategoryMutationPayload';
-  category?: Maybe<CategoryNode>;
-  clientMutationId?: Maybe<Scalars['String']>;
-};
-
-export type CreateNewsMutationInput = {
-  selectCategoryId?: Maybe<Scalars['ID']>;
-  url: Scalars['String'];
-  tagIds?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  contributorName?: Maybe<Scalars['String']>;
-  createdAt: Scalars['Int'];
-  clientMutationId?: Maybe<Scalars['String']>;
-};
-
-export type CreateNewsMutationPayload = {
-  __typename?: 'CreateNewsMutationPayload';
-  news?: Maybe<NewsNode>;
-  clientMutationId?: Maybe<Scalars['String']>;
-};
-
-export type CreateTagMutationInput = {
-  tagName: Scalars['String'];
-  clientMutationId?: Maybe<Scalars['String']>;
-};
-
-export type CreateTagMutationPayload = {
-  __typename?: 'CreateTagMutationPayload';
-  tag?: Maybe<TagNode>;
-  clientMutationId?: Maybe<Scalars['String']>;
+  SocialCamelJSON: any;
 };
 
 export type CreateUserMutationInput = {
@@ -118,18 +35,11 @@ export type CreateUserMutationPayload = {
 };
 
 
-
 export type Mutation = {
   __typename?: 'Mutation';
   createUser?: Maybe<CreateUserMutationPayload>;
-  createCategory?: Maybe<CreateCategoryMutationPayload>;
-  createTag?: Maybe<CreateTagMutationPayload>;
-  createNews?: Maybe<CreateNewsMutationPayload>;
-  updateNews?: Maybe<UpdateNewsMutationPayload>;
-  /** Obtain JSON Web Token mutation */
-  tokenAuth?: Maybe<ObtainJsonWebToken>;
-  refreshToken?: Maybe<Refresh>;
-  revokeToken?: Maybe<Revoke>;
+  /** Social Auth Mutation */
+  socialAuth?: Maybe<SocialAuth>;
 };
 
 
@@ -138,96 +48,15 @@ export type MutationCreateUserArgs = {
 };
 
 
-export type MutationCreateCategoryArgs = {
-  input: CreateCategoryMutationInput;
-};
-
-
-export type MutationCreateTagArgs = {
-  input: CreateTagMutationInput;
-};
-
-
-export type MutationCreateNewsArgs = {
-  input: CreateNewsMutationInput;
-};
-
-
-export type MutationUpdateNewsArgs = {
-  input: UpdateNewsMutationInput;
-};
-
-
-export type MutationTokenAuthArgs = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
-
-export type MutationRefreshTokenArgs = {
-  refreshToken?: Maybe<Scalars['String']>;
-};
-
-
-export type MutationRevokeTokenArgs = {
-  refreshToken?: Maybe<Scalars['String']>;
-};
-
-export type NewsNode = Node & {
-  __typename?: 'NewsNode';
-  /** The ID of the object. */
-  id: Scalars['ID'];
-  selectCategory?: Maybe<CategoryNode>;
-  url: Scalars['String'];
-  title?: Maybe<Scalars['String']>;
-  summary?: Maybe<Scalars['String']>;
-  imagePath?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
-  tags: TagNodeConnection;
-  contributorName?: Maybe<Scalars['String']>;
-};
-
-
-export type NewsNodeTagsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  tagName?: Maybe<Scalars['String']>;
-  tagName_Icontains?: Maybe<Scalars['String']>;
-};
-
-export type NewsNodeConnection = {
-  __typename?: 'NewsNodeConnection';
-  /** Pagination data for this connection. */
-  pageInfo: PageInfo;
-  /** Contains the nodes in this connection. */
-  edges: Array<Maybe<NewsNodeEdge>>;
-};
-
-/** A Relay edge containing a `NewsNode` and its cursor. */
-export type NewsNodeEdge = {
-  __typename?: 'NewsNodeEdge';
-  /** The item at the end of the edge */
-  node?: Maybe<NewsNode>;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
+export type MutationSocialAuthArgs = {
+  accessToken: Scalars['String'];
+  provider: Scalars['String'];
 };
 
 /** An object with an ID */
 export type Node = {
   /** The ID of the object. */
   id: Scalars['ID'];
-};
-
-/** Obtain JSON Web Token mutation */
-export type ObtainJsonWebToken = {
-  __typename?: 'ObtainJSONWebToken';
-  payload: Scalars['GenericScalar'];
-  refreshExpiresIn: Scalars['Int'];
-  token: Scalars['String'];
-  refreshToken: Scalars['String'];
 };
 
 /** The Relay compliant `PageInfo` type, containing data necessary to paginate this connection. */
@@ -247,16 +76,6 @@ export type Query = {
   __typename?: 'Query';
   user?: Maybe<UserNode>;
   allUsers?: Maybe<UserNodeConnection>;
-  category?: Maybe<CategoryNode>;
-  allCategories?: Maybe<CategoryNodeConnection>;
-  tag?: Maybe<TagNode>;
-  allTags?: Maybe<TagNodeConnection>;
-  news?: Maybe<NewsNode>;
-  allNews?: Maybe<NewsNodeConnection>;
-  todayNews?: Maybe<NewsNodeConnection>;
-  yesterdayNews?: Maybe<NewsNodeConnection>;
-  specificDayNews?: Maybe<NewsNodeConnection>;
-  newsCount?: Maybe<Scalars['Int']>;
 };
 
 
@@ -271,179 +90,58 @@ export type QueryAllUsersArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
+  username?: Maybe<Scalars['String']>;
+  username_Icontains?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   email_Icontains?: Maybe<Scalars['String']>;
   isStaff?: Maybe<Scalars['Boolean']>;
 };
 
-
-export type QueryCategoryArgs = {
-  id: Scalars['ID'];
+/** Social Auth Mutation */
+export type SocialAuth = {
+  __typename?: 'SocialAuth';
+  social?: Maybe<SocialType>;
 };
 
 
-export type QueryAllCategoriesArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  categoryName?: Maybe<Scalars['String']>;
-  categoryName_Icontains?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryTagArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryAllTagsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  tagName?: Maybe<Scalars['String']>;
-  tagName_Icontains?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryNewsArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryAllNewsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  url?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  title_Icontains?: Maybe<Scalars['String']>;
-  summary?: Maybe<Scalars['String']>;
-  summary_Icontains?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  createdAt_Icontains?: Maybe<Scalars['DateTime']>;
-};
-
-
-export type QueryTodayNewsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  url?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  title_Icontains?: Maybe<Scalars['String']>;
-  summary?: Maybe<Scalars['String']>;
-  summary_Icontains?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  createdAt_Icontains?: Maybe<Scalars['DateTime']>;
-};
-
-
-export type QueryYesterdayNewsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  url?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  title_Icontains?: Maybe<Scalars['String']>;
-  summary?: Maybe<Scalars['String']>;
-  summary_Icontains?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  createdAt_Icontains?: Maybe<Scalars['DateTime']>;
-};
-
-
-export type QuerySpecificDayNewsArgs = {
-  year: Scalars['Int'];
-  month: Scalars['Int'];
-  day: Scalars['Int'];
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  url?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  title_Icontains?: Maybe<Scalars['String']>;
-  summary?: Maybe<Scalars['String']>;
-  summary_Icontains?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  createdAt_Icontains?: Maybe<Scalars['DateTime']>;
-};
-
-export type Refresh = {
-  __typename?: 'Refresh';
-  payload: Scalars['GenericScalar'];
-  refreshExpiresIn: Scalars['Int'];
-  token: Scalars['String'];
-  refreshToken: Scalars['String'];
-};
-
-export type Revoke = {
-  __typename?: 'Revoke';
-  revoked: Scalars['Int'];
-};
-
-export type TagNode = Node & {
-  __typename?: 'TagNode';
+export type SocialNode = Node & {
+  __typename?: 'SocialNode';
   /** The ID of the object. */
   id: Scalars['ID'];
-  tagName: Scalars['String'];
-  tags: NewsNodeConnection;
+  user: UserNode;
+  provider: Scalars['String'];
+  uid: Scalars['String'];
+  extraData?: Maybe<Scalars['SocialCamelJSON']>;
+  created: Scalars['DateTime'];
+  modified: Scalars['DateTime'];
 };
 
-
-export type TagNodeTagsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  url?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  title_Icontains?: Maybe<Scalars['String']>;
-  summary?: Maybe<Scalars['String']>;
-  summary_Icontains?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  createdAt_Icontains?: Maybe<Scalars['DateTime']>;
-};
-
-export type TagNodeConnection = {
-  __typename?: 'TagNodeConnection';
+export type SocialNodeConnection = {
+  __typename?: 'SocialNodeConnection';
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
   /** Contains the nodes in this connection. */
-  edges: Array<Maybe<TagNodeEdge>>;
+  edges: Array<Maybe<SocialNodeEdge>>;
 };
 
-/** A Relay edge containing a `TagNode` and its cursor. */
-export type TagNodeEdge = {
-  __typename?: 'TagNodeEdge';
+/** A Relay edge containing a `SocialNode` and its cursor. */
+export type SocialNodeEdge = {
+  __typename?: 'SocialNodeEdge';
   /** The item at the end of the edge */
-  node?: Maybe<TagNode>;
+  node?: Maybe<SocialNode>;
   /** A cursor for use in pagination */
   cursor: Scalars['String'];
 };
 
-export type UpdateNewsMutationInput = {
+export type SocialType = {
+  __typename?: 'SocialType';
   id: Scalars['ID'];
-  createdAt: Scalars['Int'];
-  clientMutationId?: Maybe<Scalars['String']>;
-};
-
-export type UpdateNewsMutationPayload = {
-  __typename?: 'UpdateNewsMutationPayload';
-  news?: Maybe<NewsNode>;
-  clientMutationId?: Maybe<Scalars['String']>;
+  user: UserNode;
+  provider: Scalars['String'];
+  uid: Scalars['String'];
+  extraData?: Maybe<Scalars['SocialCamelJSON']>;
+  created: Scalars['DateTime'];
+  modified: Scalars['DateTime'];
 };
 
 export type UserNode = Node & {
@@ -454,11 +152,26 @@ export type UserNode = Node & {
   lastLogin?: Maybe<Scalars['DateTime']>;
   /** 全ての権限を持っているとみなされます。 */
   isSuperuser: Scalars['Boolean'];
+  username: Scalars['String'];
   email: Scalars['String'];
   isActive: Scalars['Boolean'];
   isStaff: Scalars['Boolean'];
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
+  socialAuth: SocialNodeConnection;
+};
+
+
+export type UserNodeSocialAuthArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  uid?: Maybe<Scalars['String']>;
+  uid_In?: Maybe<Array<Maybe<Scalars['String']>>>;
+  provider?: Maybe<Scalars['String']>;
+  provider_In?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type UserNodeConnection = {
@@ -478,44 +191,118 @@ export type UserNodeEdge = {
   cursor: Scalars['String'];
 };
 
-export type GetNewsCountQueryVariables = Exact<{ [key: string]: never; }>;
+export type SocialAuthMutationVariables = Exact<{
+  accessToken: Scalars['String'];
+}>;
 
 
-export type GetNewsCountQuery = (
+export type SocialAuthMutation = (
+  { __typename?: 'Mutation' }
+  & { socialAuth?: Maybe<(
+    { __typename?: 'SocialAuth' }
+    & { social?: Maybe<(
+      { __typename?: 'SocialType' }
+      & Pick<SocialType, 'id' | 'provider' | 'uid' | 'extraData' | 'created' | 'modified'>
+      & { user: (
+        { __typename?: 'UserNode' }
+        & Pick<UserNode, 'id' | 'email' | 'isActive'>
+      ) }
+    )> }
+  )> }
+);
+
+export type GetUserQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetUserQuery = (
   { __typename?: 'Query' }
-  & Pick<Query, 'newsCount'>
+  & { user?: Maybe<(
+    { __typename?: 'UserNode' }
+    & Pick<UserNode, 'id' | 'email'>
+  )> }
 );
 
 
-export const GetNewsCountDocument = gql`
-    query GetNewsCount {
-  newsCount
+export const SocialAuthDocument = gql`
+    mutation SocialAuth($accessToken: String!) {
+  socialAuth(provider: "google-oauth2", accessToken: $accessToken) {
+    social {
+      id
+      user {
+        id
+        email
+        isActive
+      }
+      provider
+      uid
+      extraData
+      created
+      modified
+    }
+  }
+}
+    `;
+export type SocialAuthMutationFn = Apollo.MutationFunction<SocialAuthMutation, SocialAuthMutationVariables>;
+
+/**
+ * __useSocialAuthMutation__
+ *
+ * To run a mutation, you first call `useSocialAuthMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSocialAuthMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [socialAuthMutation, { data, loading, error }] = useSocialAuthMutation({
+ *   variables: {
+ *      accessToken: // value for 'accessToken'
+ *   },
+ * });
+ */
+export function useSocialAuthMutation(baseOptions?: Apollo.MutationHookOptions<SocialAuthMutation, SocialAuthMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SocialAuthMutation, SocialAuthMutationVariables>(SocialAuthDocument, options);
+      }
+export type SocialAuthMutationHookResult = ReturnType<typeof useSocialAuthMutation>;
+export type SocialAuthMutationResult = Apollo.MutationResult<SocialAuthMutation>;
+export type SocialAuthMutationOptions = Apollo.BaseMutationOptions<SocialAuthMutation, SocialAuthMutationVariables>;
+export const GetUserDocument = gql`
+    query GetUser($id: ID!) {
+  user(id: $id) {
+    id
+    email
+  }
 }
     `;
 
 /**
- * __useGetNewsCountQuery__
+ * __useGetUserQuery__
  *
- * To run a query within a React component, call `useGetNewsCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetNewsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetNewsCountQuery({
+ * const { data, loading, error } = useGetUserQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetNewsCountQuery(baseOptions?: Apollo.QueryHookOptions<GetNewsCountQuery, GetNewsCountQueryVariables>) {
+export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetNewsCountQuery, GetNewsCountQueryVariables>(GetNewsCountDocument, options);
+        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
       }
-export function useGetNewsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNewsCountQuery, GetNewsCountQueryVariables>) {
+export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetNewsCountQuery, GetNewsCountQueryVariables>(GetNewsCountDocument, options);
+          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
         }
-export type GetNewsCountQueryHookResult = ReturnType<typeof useGetNewsCountQuery>;
-export type GetNewsCountLazyQueryHookResult = ReturnType<typeof useGetNewsCountLazyQuery>;
-export type GetNewsCountQueryResult = Apollo.QueryResult<GetNewsCountQuery, GetNewsCountQueryVariables>;
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;

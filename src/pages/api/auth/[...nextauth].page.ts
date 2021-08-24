@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
+import { userInfoVar } from "src/graphql/apollo/cache";
 
 // eslint-disable-next-line import/no-default-export
 export default NextAuth({
@@ -15,7 +16,7 @@ export default NextAuth({
   callbacks: {
     async signIn(_user, _account, _profile) {
       // eslint-disable-next-line no-console
-      console.log("signIn!");
+      console.log("signIn!", _user, _account, _profile);
       // 初回サインイン時にDBにユーザーを登録し、二回目以降はユーザーが存在すればOKにする
       return true;
     },
@@ -26,11 +27,12 @@ export default NextAuth({
     },
     async jwt(token, _user, account, _profile, _isNewUser) {
       // eslint-disable-next-line no-console
-      console.log("jwt!");
-      // console.log("jwt!", token, _user, account, _profile, _isNewUser);
+      console.log("jwt!", token, _user, account, _profile, _isNewUser);
+      // console.log("jwt!");
       // Add access_token to the token right after signin
       if (account?.accessToken) {
         token.accessToken = account.accessToken;
+        userInfoVar({ accessToken: account.accessToken });
       }
       return token;
     },
