@@ -2,7 +2,7 @@ import type { NormalizedCacheObject } from "@apollo/client";
 import { ApolloClient } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
-import { getSession } from "next-auth/client";
+// import { getSession } from "next-auth/client";
 // import type { AppProps } from "next/dist/next-server/lib/router/router";
 // import nookies, { parseCookies } from "nookies";
 import { cache } from "src/graphql/apollo/cache";
@@ -11,10 +11,7 @@ import { GRAPHQL_API_ENDPOINT } from "src/utils/API_ENDPOINTS";
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-const httpLink = createUploadLink({
-  uri: GRAPHQL_API_ENDPOINT,
-});
-
+// TODO: ↓いらないかも
 const authLink = setContext((operation, { headers }) => {
   // const accessToken = useReactiveVar(userInfoVar).accessToken;
   // if (accessToken) {
@@ -25,23 +22,27 @@ const authLink = setContext((operation, { headers }) => {
   // return { headers: { ...headers, authorization: `Bearer token` } };
 });
 
-const createApolloClient = (reactiveVar: any) => {
-  let idToken: string;
-  (async () => {
-    const session = await getSession();
-    console.log("async", session);
+const createApolloClient = (reactiveVar: any /* 引数でReactive Variablesを受け取り、 */) => {
+  // let idToken: string;
+  // const token = (async () => {
+  //   const session = await getSession();
+  //   idToken = await session.idToken as string;
+  // })();
 
-    idToken = session?.idToken as string;
-  })();
-  console.log("createApolloClient", idToken);
-
+  // 画像をアップロードするためにcreateUploadLinkを使う
   const newHttpLink = createUploadLink({
     uri: GRAPHQL_API_ENDPOINT,
-    headers: { authorization: reactiveVar.idToken ?? "" },
+    headers: {
+      // authorization: `Bearer ${reactiveVar.idToken}` ?? "",
+      authorization: reactiveVar.idToken ? `Bearer ${reactiveVar.idToken}` : "",
+    },
+    // idTokenが存在していれば値をセット
   });
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
+    // TODO: ↓authLinkで何も設定していないため、全て同じもので良いかもしれない
     link: typeof window === "undefined" ? newHttpLink : authLink.concat(newHttpLink),
+    // link: newHttpLink,
     cache: cache,
   });
 };

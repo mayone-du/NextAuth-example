@@ -1,15 +1,21 @@
 // import type { NextPage } from "next";
 import { useSession } from "next-auth/client";
 import { useState } from "react";
-import { useGetUserLazyQuery, useSocialAuthMutation } from "src/apollo/schema";
+import {
+  useGetUserLazyQuery,
+  // useSocialAuthMutation
+} from "src/apollo/schema";
 import { Layout } from "src/components/layouts/Layout";
 import { ThemeChanger } from "src/components/ThemeChanger";
 import { MainLayout } from "src/pages/_/Layouts/MainLayout";
 
 const IndexPage: any = () => {
-  const [socialAuthMutation] = useSocialAuthMutation();
+  // const [socialAuthMutation] = useSocialAuthMutation();
   const [session] = useSession();
-  const [authState, setAuthState] = useState<any>();
+  const [
+    authState,
+    // setAuthState
+  ] = useState<any>();
   const [getUserLazyQuery, { data: userData }] = useGetUserLazyQuery();
   // eslint-disable-next-line no-console
   console.log("IndexPage Session", session);

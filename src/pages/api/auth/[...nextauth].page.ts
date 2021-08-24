@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 
+// TODO: 各引数で受け取る値の型の修正
+
 /* eslint-disable @typescript-eslint/naming-convention */
 const GOOGLE_AUTHORIZATION_URL =
   "https://accounts.google.com/o/oauth2/v2/auth?" +
@@ -34,7 +36,7 @@ const refreshAccessToken = async (token: any) => {
     });
 
     const refreshedTokens = await response.json();
-    console.log("refreshedTokens", refreshedTokens);
+    // console.log("refreshedTokens", refreshedTokens);
 
     if (!response.ok) {
       throw refreshedTokens;
@@ -48,7 +50,7 @@ const refreshAccessToken = async (token: any) => {
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
     };
   } catch (error) {
-    console.log("refreshAccessTokenError", error);
+    console.error("refreshAccessTokenError", error);
 
     return {
       ...token,
@@ -79,9 +81,9 @@ export default NextAuth({
       console.log("redirect!", url, baseUrl);
       return url.startsWith(baseUrl) ? url : baseUrl;
     },
-    async jwt(token, user, account, _profile, _isNewUser) {
+    async jwt(token: any, user, account: any, _profile, _isNewUser) {
       // eslint-disable-next-line no-console
-      console.log("NextAuth jwt fn", token, user, account, _profile, _isNewUser);
+      // console.log("NextAuth jwt fn", token, user, account, _profile, _isNewUser);
 
       if (account && user) {
         return {
@@ -107,9 +109,9 @@ export default NextAuth({
       // }
       // return token;
     },
-    async session(session, token) {
+    async session(session: any, token) {
       // eslint-disable-next-line no-console
-      console.log("NextAuth session fn", token);
+      // console.log("NextAuth session fn", token);
 
       if (token) {
         session.user = token.user;
@@ -117,10 +119,6 @@ export default NextAuth({
         session.accessToken = token.accessToken;
         session.error = token.error;
       }
-      return session;
-
-      // Add property to session, like an access_token from a provider.
-      session.accessToken = (token as any).accessToken;
       return session;
     },
   },
