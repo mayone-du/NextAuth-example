@@ -2,4 +2,10 @@ import { InMemoryCache, makeVar } from "@apollo/client";
 
 export const cache = new InMemoryCache();
 
-export const userInfoVar = makeVar({ idToken: "" });
+// ユーザー情報をReactive Variablesで管理しようと思ったけど、基本情報はNextAuth.jsのuseSessionで取得できる
+export const userInfoVar = makeVar({
+  idToken: "",
+  // username: "",
+  // email: "",
+  // imagePath: "",
+});

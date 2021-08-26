@@ -2,9 +2,6 @@ import type { NormalizedCacheObject } from "@apollo/client";
 import { ApolloClient } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
-// import { getSession } from "next-auth/client";
-// import type { AppProps } from "next/dist/next-server/lib/router/router";
-// import nookies, { parseCookies } from "nookies";
 import { cache } from "src/graphql/apollo/cache";
 import { GRAPHQL_API_ENDPOINT } from "src/utils/API_ENDPOINTS";
 
@@ -13,22 +10,10 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 // TODO: ↓いらないかも
 const authLink = setContext((operation, { headers }) => {
-  // const accessToken = useReactiveVar(userInfoVar).accessToken;
-  // if (accessToken) {
-  //   return { headers: { ...headers, authorization: `Bearer ${accessToken}` } };
-  // } else {
   return { headers };
-  // }
-  // return { headers: { ...headers, authorization: `Bearer token` } };
 });
 
 const createApolloClient = (reactiveVar: any /* 引数でReactive Variablesを受け取り、 */) => {
-  // let idToken: string;
-  // const token = (async () => {
-  //   const session = await getSession();
-  //   idToken = await session.idToken as string;
-  // })();
-
   // 画像をアップロードするためにcreateUploadLinkを使う
   const newHttpLink = createUploadLink({
     uri: GRAPHQL_API_ENDPOINT,
