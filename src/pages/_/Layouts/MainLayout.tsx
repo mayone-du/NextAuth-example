@@ -2,16 +2,16 @@ import { useReactiveVar } from "@apollo/client";
 import type { NextPage } from "next";
 import { getSession } from "next-auth/client";
 import { useEffect } from "react";
-import { Footer } from "src/components/layouts/Footer";
-import { Header } from "src/components/layouts/Header";
 import { userInfoVar } from "src/graphql/apollo/cache";
+import { Footer } from "src/pages/_/Layouts/Footer";
+import { Header } from "src/pages/_/Layouts/Header";
 import { LayoutErrorBoundary } from "src/pages/_/Layouts/LayoutErrorBoundary";
 
 // メインレイアウト
 export const MainLayout = (page: NextPage) => {
   const userInfo = useReactiveVar(userInfoVar);
 
-  // 初回マウント時にユーザー情報を取得し、ReactiveVariablesでグローバル管理
+  // 初回マウント時にユーザー情報を取得し、ReactiveVariablesでグローバル管理して、_appで値を参照する
   useEffect(() => {
     if (!userInfo.idToken) {
       (async () => {
@@ -19,7 +19,7 @@ export const MainLayout = (page: NextPage) => {
         const idToken = session?.idToken as string;
         userInfoVar({
           idToken: idToken,
-          // username: session?.user?.name ?? "",
+          // username: session?.user?.name ?? ""
           // email: session?.user?.email ?? "",
           // imagePath: session?.user?.image ?? "",
         });
@@ -27,8 +27,6 @@ export const MainLayout = (page: NextPage) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // useEffect(() => {}, []);
 
   return (
     <div>

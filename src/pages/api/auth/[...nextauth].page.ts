@@ -1,5 +1,8 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
+import type { SocialAuthMutation, SocialAuthMutationVariables } from "src/apollo/schema";
+import { SocialAuthDocument } from "src/apollo/schema";
+import { initializeApollo } from "src/graphql/apollo/client";
 
 // TODO: 各引数で受け取る値の型の修正
 
@@ -70,17 +73,33 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async signIn(_user, _account, _profile) {
-      // eslint-disable-next-line no-console
-      console.log("signIn!", _user, _account, _profile);
-      // TODO: 初回サインイン時にDBにユーザーを登録し、二回目以降はユーザーが存在すればOKにする
-      return true;
+    // サインイン時の処理
+    async signIn(_user, account, _profile) {
+      // 初回サインイン時にDBにユーザーを登録し、二回目以降はユーザーが存在すればOKにする
+      const apolloClient = initializeApollo(null, account.idToken);
+      const { errors } = await apolloClient.mutate<SocialAuthMutation, SocialAuthMutationVariables>(
+        {
+          mutation: SocialAuthDocument,
+          variables: {
+            accessToken: account.accessToken,
+          },
+        },
+      );
+      // SocialAuthのエラーが無ければOK
+      if (errors) {
+        console.error(errors);
+        return false;
+      } else {
+        return true;
+      }
     },
+    // リダイレクト時の処理 普通にページ遷移した時に呼び出されるぽい？
     async redirect(url, baseUrl) {
       // eslint-disable-next-line no-console
       console.log("redirect!", url, baseUrl);
       return url.startsWith(baseUrl) ? url : baseUrl;
     },
+    // TODO: 要チェック
     async jwt(token: any, user, account: any, _profile, _isNewUser) {
       // eslint-disable-next-line no-console
       // console.log("NextAuth jwt fn", token, user, account, _profile, _isNewUser);

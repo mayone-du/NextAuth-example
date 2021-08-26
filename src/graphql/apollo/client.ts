@@ -13,13 +13,13 @@ const authLink = setContext((operation, { headers }) => {
   return { headers };
 });
 
-const createApolloClient = (reactiveVar: any /* 引数でReactive Variablesを受け取り、 */) => {
+const createApolloClient = (idToken: string | undefined /* 引数でidTokenを受け取る */) => {
   // 画像をアップロードするためにcreateUploadLinkを使う
   const newHttpLink = createUploadLink({
     uri: GRAPHQL_API_ENDPOINT,
     headers: {
-      // authorization: `Bearer ${reactiveVar.idToken}` ?? "",
-      authorization: reactiveVar.idToken ? `Bearer ${reactiveVar.idToken}` : "",
+      // authorization: `Bearer ${idToken.idToken}` ?? "",
+      authorization: idToken ? `Bearer ${idToken}` : "",
     },
     // idTokenが存在していれば値をセット
   });
@@ -31,8 +31,8 @@ const createApolloClient = (reactiveVar: any /* 引数でReactive Variablesを�
     cache: cache,
   });
 };
-export const initializeApollo = (_initialState = null, reactiveVar: any) => {
-  const _apolloClient = apolloClient ?? createApolloClient(reactiveVar);
+export const initializeApollo = (_initialState = null, idToken: string | undefined) => {
+  const _apolloClient = apolloClient ?? createApolloClient(idToken);
   // SSR時は新しいclientを作成
   if (typeof window === "undefined") return _apolloClient;
   // CSR時は同じクライアントを使い回す

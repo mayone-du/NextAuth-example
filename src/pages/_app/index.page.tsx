@@ -17,7 +17,7 @@ nprogress.configure({ showSpinner: false, speed: 400, minimum: 0.25 });
 const App = (props: any) => {
   // MainLayoutでセットされた値を取得し、ApolloClientへ渡す
   const userInfo = useReactiveVar(userInfoVar);
-  const apolloClient = initializeApollo(null, userInfo);
+  const apolloClient = initializeApollo(null, userInfo.idToken);
 
   if (process.browser) {
     nprogress.start();
