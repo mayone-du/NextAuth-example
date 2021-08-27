@@ -1,0 +1,10 @@
+mutation CreateUser {
+  createUser(
+    input: { username: "test user", email: "test.develop.webapp@gmail.com", password: "password" }
+  ) {
+    user {
+      id
+      email
+    }
+  }
+}

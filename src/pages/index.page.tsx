@@ -1,7 +1,7 @@
 // import type { NextPage } from "next";
 import { useSession } from "next-auth/client";
-import { useGetUserLazyQuery } from "src/apollo/schema";
 import { ThemeChanger } from "src/components/ThemeChanger";
+import { useCreateUserMutation, useGetUserLazyQuery } from "src/graphql/schemas/schema";
 import { MainLayout } from "src/pages/_/Layouts/MainLayout";
 
 const IndexPage: any = () => {
@@ -9,11 +9,14 @@ const IndexPage: any = () => {
   const [getUserLazyQuery, { data: userData }] = useGetUserLazyQuery({
     fetchPolicy: "network-only",
   });
+  const [createUserMutation] = useCreateUserMutation();
   // eslint-disable-next-line no-console
   console.log("IndexPage Session", session);
 
   const handleClick = async () => {
     getUserLazyQuery({ variables: { id: "VXNlck5vZGU6Mg==" } });
+    const { data } = await createUserMutation();
+    console.log(data);
   };
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">
